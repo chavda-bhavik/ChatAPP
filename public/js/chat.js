@@ -37,6 +37,10 @@ const autoScroll = () => {
     $messages.scrollTop = $messages.scrollHeight
 }
 
+socket.on("login", () => {
+    location.href = '/'
+})
+
 socket.on('message', (msg) => {
     const html = Mustache.render(messageTemplate,{
         username: msg.username,

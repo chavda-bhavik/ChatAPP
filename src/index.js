@@ -52,6 +52,8 @@ io.on('connection', (socket) => {
         const filter = new Filter()
         const user = getUser(socket.id)
         
+        if(!user) return socket.emit("login")
+
         if(filter.isProfane(msg)) return callback('Profanity is not Allowed!')
         
         io.to(user.room).emit('message', generateMessage(user.username,msg) )
@@ -61,6 +63,8 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
         
+        if(!user) return socket.emit("login")
+
         if(user) {
             io.to(user.room).emit('message', generateMessage('Admin',`${user.username} has left!`) )
             io.to(user.room).emit('roomData', {
